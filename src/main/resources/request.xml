@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<request>
+    <sellerId>UID</sellerId>
+    <sellerSecret>secret</sellerSecret>
+    <sellerBankAccount> </sellerBankAccount>
+    <buyerId>UID</buyerId>
+    <buyerSecret>secret</buyerSecret>
+    <buyerBankAccount> </buyerBankAccount>
+    <sum>sum</sum>
+</request>

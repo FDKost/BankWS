@@ -1,0 +1,26 @@
+--liquibase formatted sql
+
+--changeset FDKost:1
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+--changeset FDKost:2
+CREATE TABLE IF NOT EXISTS client
+(
+    id uuid PRIMARY KEY ,
+    name TEXT,
+    open_key TEXT
+);
+CREATE TABLE IF NOT EXISTS bank_account
+(
+    id uuid PRIMARY KEY ,
+    user_id uuid,
+    number TEXT,
+    sum DECIMAL
+);
+CREATE TABLE IF NOT EXISTS operation
+(
+    id uuid PRIMARY KEY ,
+    recipient_bank_account uuid,
+    sender_bank_account uuid,
+    transaction uuid,
+    sum DECIMAL
+)
