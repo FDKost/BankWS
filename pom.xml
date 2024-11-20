@@ -28,6 +28,15 @@
     </scm>
     <properties>
         <java.version>17</java.version>
+        <springweb.version>6.1.14</springweb.version>
+        <jaxws.version>3.5.2</jaxws.version>
+        <javaxact.version>1.1</javaxact.version>
+        <jaxbapi.version>2.3.1</jaxbapi.version>
+        <jaxbruntime.version>4.0.5</jaxbruntime.version>
+        <liquibase.version>4.29.2</liquibase.version>
+        <postgre.version>42.7.0</postgre.version>
+        <springdockercompose.version>3.3.5</springdockercompose.version>
+        <jaxb2.version>3.1.0</jaxb2.version>
     </properties>
     <dependencies>
         <dependency>
@@ -38,13 +47,13 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
-            <version>6.1.14</version>
+            <version>${springweb.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-spring-boot-starter-jaxws</artifactId>
-            <version>3.5.2</version>
+            <version>${jaxws.version}</version>
         </dependency>
 
         <dependency>
@@ -66,25 +75,25 @@
         <dependency>
             <groupId>javax.activation</groupId>
             <artifactId>activation</artifactId>
-            <version>1.1</version>
+            <version>${javaxact.version}</version>
         </dependency>
 
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
-            <version>2.3.1</version>
+            <version>${jaxbapi.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.glassfish.jaxb</groupId>
             <artifactId>jaxb-runtime</artifactId>
-            <version>4.0.5</version>
+            <version>${jaxbruntime.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
-            <version>4.29.2</version>
+            <version>${liquibase.version}</version>
         </dependency>
 
         <dependency>
@@ -95,7 +104,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.7.0</version>
+            <version>${postgre.version}</version>
         </dependency>
 
         <dependency>
@@ -107,7 +116,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-docker-compose</artifactId>
-            <version>3.3.5</version>
+            <version>${springdockercompose.version}</version>
         </dependency>
     </dependencies>
 
@@ -121,7 +130,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jaxb2-maven-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>${jaxb2.version}</version>
                 <executions>
                     <execution>
                         <id>xjc</id>

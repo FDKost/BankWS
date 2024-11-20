@@ -8,18 +8,9 @@ import org.example.bank.service.bankaccount.BankAccountService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
-import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
-import java.security.interfaces.RSAPublicKey;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.X509EncodedKeySpec;
-import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -54,8 +45,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Optional<ClientEntity> update(ClientEntity entity) {
-        return clientRepository.findById(entity.getId())
-                .map(clientRepository::saveAndFlush);
+        return Optional.of(clientRepository.saveAndFlush(entity));
     }
 
     @Override

@@ -1,6 +1,7 @@
 package org.example.bank.service.bankaccount;
 
 import com.fdkost.jee.soap.BuyerBankAccount;
+import com.fdkost.jee.soap.GetBankRequest;
 import com.fdkost.jee.soap.GetBankResponse;
 import com.fdkost.jee.soap.SellerBankAccount;
 import org.example.bank.entity.BankAccountEntity;
@@ -29,4 +30,5 @@ public interface BankAccountService {
     void deleteById(BankAccountEntity bankAccountEntity);
     BankAccountEntity checkBankAccountExists(ClientEntity clientEntity,BigDecimal sum);
     byte[] encrypt(BigDecimal sum, BankAccountEntity bankAccountEntity) throws IOException, InvalidKeySpecException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException;
+    boolean checkMessages(BankAccountEntity buyerBankAccount, BankAccountEntity sellerBankAccount, GetBankRequest request) throws NoSuchPaddingException, IllegalBlockSizeException, IOException, InvalidKeySpecException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException;
 }
