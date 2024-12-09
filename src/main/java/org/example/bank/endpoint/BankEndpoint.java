@@ -31,7 +31,13 @@ public class BankEndpoint {
     @ResponsePayload
     public GetBankResponse getBank(@RequestPayload GetBankRequest request) {
         Optional<ClientEntity> existingBuyer = clientService.findById(UUID.fromString(request.getBuyerId()));
-        Optional<ClientEntity> existingSeller = clientService.findById(UUID.fromString(request.getSellerId()));
+        if (existingBuyer.isEmpty()) {
+            existingBuyer = Optional.ofNullable(clientService.create(ClientEntity.builder()
+                    .name(request.getBuyerBankAccount().getClient().getName())
+                    .id(UUID.fromString(request.getBuyerId()))
+                    .build()));
+        }
+        Optional<ClientEntity> existingSeller = clientService.findByName(request.getSellerBankAccount().getClient().getName());
         GetBankResponse response = new GetBankResponse();
         if (existingBuyer.isPresent() && existingSeller.isPresent()) {
             BankAccountEntity sellerBankAccount = bankAccountService.checkBankAccountExists(existingSeller.get(), request.getSellerBankAccount().getSum());
@@ -43,7 +49,7 @@ public class BankEndpoint {
             }
         } else {
             response.setStatus(500);
-            response.setMessage("User not found");
+            response.setMessage("Try again later");
             response.setTransactionId(null);
         }
 

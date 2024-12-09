@@ -10,7 +10,10 @@ services:
     volumes:
       - bankservice-db:/var/lib/postgres/data/
     ports:
-      - "127.0.0.1:5432:5432"
+      - "54321:5432"
+
+    networks:
+      - banknetwork
 
   bankservice:
     build: .
@@ -19,9 +22,16 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db_bank:5432/bankService
     ports:
-      - "8080:8080"
+      - "8081:8080"
     depends_on:
       - db_bank
 
+    networks:
+      - banknetwork
+
 volumes:
   bankservice-db:
+
+networks:
+  banknetwork:
+    driver: bridge
