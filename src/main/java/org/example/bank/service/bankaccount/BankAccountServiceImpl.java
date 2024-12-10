@@ -5,6 +5,7 @@ import com.fdkost.jee.soap.GetBankRequest;
 import com.fdkost.jee.soap.GetBankResponse;
 import com.fdkost.jee.soap.SellerBankAccount;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.bank.entity.BankAccountEntity;
 import org.example.bank.entity.ClientEntity;
 import org.example.bank.repository.BankAccountRepository;
@@ -31,6 +32,7 @@ import java.util.Base64;
 import java.util.Optional;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -134,32 +136,6 @@ public class BankAccountServiceImpl implements BankAccountService {
         return entity;
     }
 
-    public byte[] encrypt(BigDecimal sum, BankAccountEntity bankAccountEntity) throws IOException, InvalidKeySpecException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
-        InputStream inputStream = getClass().getResourceAsStream("/privatekey.pem");
-        String privateKeyContent = new String(inputStream.readAllBytes());
-
-        privateKeyContent = convertPrivateKey(privateKeyContent);
-        KeyFactory kf = KeyFactory.getInstance("RSA");
-
-        PKCS8EncodedKeySpec keySpecPKCS8 = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(privateKeyContent));
-        PrivateKey privateKey = kf.generatePrivate(keySpecPKCS8);
-
-        Cipher cipher = Cipher.getInstance("RSA");
-        cipher.init(Cipher.ENCRYPT_MODE,privateKey);
-        String message = sum +"/"+bankAccountEntity.getId();
-        byte[] messageBytes = message.getBytes(StandardCharsets.UTF_8);
-
-        return cipher.doFinal(messageBytes);
-    }
-
-    private String convertPrivateKey(String privateKeyContent){
-
-        privateKeyContent = privateKeyContent.replaceAll("\\n", "").replace("-----BEGIN PRIVATE KEY-----", "").replace("-----END PRIVATE KEY-----", "");
-        privateKeyContent = privateKeyContent.replaceAll("\\s", "");
-
-        return privateKeyContent;
-    }
-
     private String convertPublicKey(String publicKey){
         publicKey = publicKey.replaceAll("\\n", "").replace("-----BEGIN PUBLIC KEY-----","").replace("-----END PUBLIC KEY-----","");
         publicKey = publicKey.replaceAll("\\s", "");
@@ -174,6 +150,7 @@ public class BankAccountServiceImpl implements BankAccountService {
         publicKey = convertPublicKey(publicKey);
 
         X509EncodedKeySpec keySpecX509 = new X509EncodedKeySpec(Base64.getDecoder().decode(publicKey));
+
         RSAPublicKey pubKey = (RSAPublicKey) kf.generatePublic(keySpecX509);
         cipher.init(Cipher.DECRYPT_MODE, pubKey);
         return cipher.doFinal(message);
@@ -181,14 +158,14 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Override
     public boolean checkMessages(BankAccountEntity buyerBankAccount, BankAccountEntity sellerBankAccount, GetBankRequest request) throws NoSuchPaddingException, IllegalBlockSizeException, IOException, InvalidKeySpecException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
-        byte[] bytesBuyerMessage = encrypt(request.getSum(),buyerBankAccount);
-        byte[] bytesSellerMessage = encrypt(request.getSum(),sellerBankAccount);
+        byte[] bytesBuyerMessage = Base64.getDecoder().decode(request.getBuyerSecret());
+        byte[] bytesSellerMessage = Base64.getDecoder().decode(request.getSellerSecret());
         byte[] decryptedBuyerMessage = decrypt(bytesBuyerMessage,request.getSum(),buyerBankAccount,buyerBankAccount.getClient().getOpenKey());
         byte[] decryptedSellerMessage = decrypt(bytesSellerMessage,request.getSum(),sellerBankAccount,sellerBankAccount.getClient().getOpenKey());
         String buyerMessage = new String(decryptedBuyerMessage, StandardCharsets.UTF_8);
         String sellerMessage = new String(decryptedSellerMessage, StandardCharsets.UTF_8);
-        String checkBMessage = request.getSum()+"/"+buyerBankAccount.getId();
-        String checkSMessage = request.getSum()+"/"+sellerBankAccount.getId();
+        String checkBMessage = request.getSum()+"/"+buyerBankAccount.getClient().getName();
+        String checkSMessage = request.getSum()+"/"+sellerBankAccount.getClient().getName();
         return buyerMessage.equals(checkBMessage) && sellerMessage.equals(checkSMessage);
     }
 }

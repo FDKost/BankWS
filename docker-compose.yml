@@ -19,6 +19,7 @@ services:
     build: .
     image: bankservice:0.0.0.1
     container_name: bankservice
+    hostname: bankservice
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db_bank:5432/bankService
     ports:
@@ -34,4 +35,4 @@ volumes:
 
 networks:
   banknetwork:
-    driver: bridge
+    external: true

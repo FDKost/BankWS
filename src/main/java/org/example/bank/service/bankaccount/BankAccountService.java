@@ -29,6 +29,5 @@ public interface BankAccountService {
     byte[] decrypt(byte[] message,BigDecimal sum, BankAccountEntity bankAccountEntity, String publicKey) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, IOException;
     void deleteById(BankAccountEntity bankAccountEntity);
     BankAccountEntity checkBankAccountExists(ClientEntity clientEntity,BigDecimal sum);
-    byte[] encrypt(BigDecimal sum, BankAccountEntity bankAccountEntity) throws IOException, InvalidKeySpecException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException;
     boolean checkMessages(BankAccountEntity buyerBankAccount, BankAccountEntity sellerBankAccount, GetBankRequest request) throws NoSuchPaddingException, IllegalBlockSizeException, IOException, InvalidKeySpecException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException;
 }
