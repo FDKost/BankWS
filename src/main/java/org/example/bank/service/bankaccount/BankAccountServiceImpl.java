@@ -17,16 +17,13 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
-import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 import java.util.Optional;
@@ -91,10 +88,12 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Override
     @Transactional
-    public GetBankResponse fillGetBank(BankAccountEntity buyerBankAccount, BankAccountEntity sellerBankAccount, BigDecimal sum, GetBankResponse response){
+    public void fillGetBank(BankAccountEntity buyerBankAccount, BankAccountEntity sellerBankAccount,
+                            BigDecimal sum, GetBankResponse response){
 
         if (buyerBankAccount.getId()!=null && sellerBankAccount.getId() != null) {
-            if (buyerBankAccount.getSum().doubleValue() > 0 && (buyerBankAccount.getSum().doubleValue() - sum.doubleValue()) >= 0){
+            if (buyerBankAccount.getSum().doubleValue() > 0
+                    && (buyerBankAccount.getSum().doubleValue() - sum.doubleValue()) >= 0){
                 sellerBankAccount.setSum((sellerBankAccount.getSum().add(sum)));
                 buyerBankAccount.setSum((buyerBankAccount.getSum().subtract(sum)));
 
@@ -105,7 +104,6 @@ public class BankAccountServiceImpl implements BankAccountService {
                 response.setStatus(500);
             }
         }
-        return response;
     }
 
     @Override

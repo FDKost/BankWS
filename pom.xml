@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.5</version>
+        <version>3.4.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.example</groupId>
@@ -27,21 +27,23 @@
         <url/>
     </scm>
     <properties>
+        <spring.version>3.4.0</spring.version>
         <java.version>17</java.version>
-        <springweb.version>6.1.14</springweb.version>
-        <jaxws.version>3.5.2</jaxws.version>
+        <springweb.version>6.2.1</springweb.version>
+        <jaxws.version>4.1.0</jaxws.version>
         <javaxact.version>1.1</javaxact.version>
         <jaxbapi.version>2.3.1</jaxbapi.version>
         <jaxbruntime.version>4.0.5</jaxbruntime.version>
         <liquibase.version>4.29.2</liquibase.version>
         <postgre.version>42.7.0</postgre.version>
-        <springdockercompose.version>3.3.5</springdockercompose.version>
+        <springdockercompose.version>3.4.0</springdockercompose.version>
         <jaxb2.version>3.1.0</jaxb2.version>
     </properties>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
+            <version>${spring.version}</version>
         </dependency>
 
         <dependency>
@@ -59,11 +61,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web-services</artifactId>
+            <version>${spring.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <version>${spring.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -99,6 +103,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <version>${spring.version}</version>
         </dependency>
 
         <dependency>

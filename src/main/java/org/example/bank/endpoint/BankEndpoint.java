@@ -35,9 +35,11 @@ public class BankEndpoint {
     public GetBankResponse getBank(@RequestPayload GetBankRequest request) {
         GetBankResponse response = new GetBankResponse();
         try {
-            Optional<ClientEntity> existingSeller = clientService.findByName(request.getSellerBankAccount().getClient().getName());
-            Optional<ClientEntity> existingBuyer = clientService.findByName(request.getBuyerBankAccount().getClient().getName());
-            if (existingBuyer.isEmpty()&&existingSeller.isPresent()) {
+            Optional<ClientEntity> existingSeller = clientService.findByName(request.
+                    getSellerBankAccount().getClient().getName());
+            Optional<ClientEntity> existingBuyer = clientService.findByName(request.
+                    getBuyerBankAccount().getClient().getName());
+            if (existingBuyer.isEmpty() && existingSeller.isPresent()) {
                 ClientEntity entity = new ClientEntity();
                 entity.setId(UUID.fromString(request.getBuyerId()));
                 entity.setName(request.getBuyerBankAccount().getClient().getName());
@@ -45,8 +47,10 @@ public class BankEndpoint {
                 existingBuyer = Optional.ofNullable(clientService.create(entity));
             }
             if (existingBuyer.isPresent() && existingSeller.isPresent()) {
-                BankAccountEntity sellerBankAccount = bankAccountService.checkBankAccountExists(existingSeller.get(), BigDecimal.valueOf(1000));
-                BankAccountEntity buyerBankAccount = bankAccountService.checkBankAccountExists(existingBuyer.get(), request.getBuyerBankAccount().getSum());
+                BankAccountEntity sellerBankAccount = bankAccountService.
+                        checkBankAccountExists(existingSeller.get(), BigDecimal.valueOf(1000));
+                BankAccountEntity buyerBankAccount = bankAccountService.
+                        checkBankAccountExists(existingBuyer.get(), request.getBuyerBankAccount().getSum());
                 buyerBankAccount.setSum(request.getSum());
                 bankAccountService.update(buyerBankAccount);
 
@@ -66,7 +70,7 @@ public class BankEndpoint {
         return response;
     }
 
-    private GetBankResponse checkCondition(GetBankResponse response, BankAccountEntity buyerBankAccount, BankAccountEntity sellerBankAccount, GetBankRequest request) {
+    private void checkCondition(GetBankResponse response, BankAccountEntity buyerBankAccount, BankAccountEntity sellerBankAccount, GetBankRequest request) {
         if (response.getStatus() == 200) {
             response.setMessage("Transaction complete");
             OperationEntity operation = operationService.create(OperationEntity.builder()
@@ -85,8 +89,6 @@ public class BankEndpoint {
             response.setMessage("Something went wrong");
             response.setTransactionId(null);
         }
-
-        return response;
     }
 }
 

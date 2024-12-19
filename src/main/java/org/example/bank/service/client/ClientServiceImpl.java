@@ -1,10 +1,12 @@
 package org.example.bank.service.client;
 
+import jakarta.persistence.LockModeType;
 import lombok.RequiredArgsConstructor;
 import org.example.bank.entity.BankAccountEntity;
 import org.example.bank.entity.ClientEntity;
 import org.example.bank.repository.ClientRepository;
 import org.example.bank.service.bankaccount.BankAccountService;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
