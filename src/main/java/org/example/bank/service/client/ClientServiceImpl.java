@@ -1,12 +1,10 @@
 package org.example.bank.service.client;
 
-import jakarta.persistence.LockModeType;
 import lombok.RequiredArgsConstructor;
 import org.example.bank.entity.BankAccountEntity;
 import org.example.bank.entity.ClientEntity;
 import org.example.bank.repository.ClientRepository;
 import org.example.bank.service.bankaccount.BankAccountService;
-import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,6 +44,15 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    public Optional<ClientEntity> checkClientExists(String name) {
+        if (clientRepository.findByName(name).isPresent()) {
+            return clientRepository.findByName(name);
+        }else {
+            return Optional.empty();
+        }
+    }
+
+    @Override
     public Optional<ClientEntity> update(ClientEntity entity) {
         return Optional.of(clientRepository.saveAndFlush(entity));
     }
@@ -59,6 +66,11 @@ public class ClientServiceImpl implements ClientService {
                 return true;
             })
             .orElse(false);
+    }
+
+    @Override
+    public Boolean checkClientsExists(String buyerName, String sellerName) {
+        return clientRepository.findByName(buyerName).isPresent() && clientRepository.findByName(sellerName).isPresent();
     }
 
     private static KeyPair generateRsaKeyPair() throws NoSuchAlgorithmException {
