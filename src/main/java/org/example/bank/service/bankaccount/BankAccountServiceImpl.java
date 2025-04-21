@@ -45,21 +45,21 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Override
     public void deleteById(BankAccountEntity bankAccountEntity) {
-            bankAccountRepository.findById(bankAccountEntity.getId())
-                    .map(entity -> {
-                        bankAccountRepository.delete(entity);
-                        bankAccountRepository.flush();
-                        return true;
-                    })
-                    .orElse(false);
+        bankAccountRepository.findById(bankAccountEntity.getId())
+                .map(entity -> {
+                    bankAccountRepository.delete(entity);
+                    bankAccountRepository.flush();
+                    return true;
+                })
+                .orElse(false);
     }
 
-    public BankAccountEntity checkBankAccountExists(ClientEntity clientEntity,BigDecimal sum) {
+    public BankAccountEntity checkBankAccountExists(ClientEntity clientEntity, BigDecimal sum) {
         Optional<BankAccountEntity> bankAccountEntityOptional = bankAccountRepository.findByClientId(clientEntity.getId());
         BankAccountEntity bankAccountEntity;
         if (bankAccountEntityOptional.isPresent()) {
             bankAccountEntity = bankAccountEntityOptional.get();
-        }else {
+        } else {
             BankAccountEntity entityToSave = new BankAccountEntity();
             entityToSave.setClient(clientEntity);
             entityToSave.setNumber("+3**********");
@@ -73,25 +73,25 @@ public class BankAccountServiceImpl implements BankAccountService {
     @Override
     @Transactional
     public void fillGetBank(BankAccountEntity buyerBankAccount, BankAccountEntity sellerBankAccount,
-                            BigDecimal sum, GetBankResponse response){
+                            BigDecimal sum, GetBankResponse response) {
 
-        if (buyerBankAccount.getId()!=null && sellerBankAccount.getId() != null) {
+        if (buyerBankAccount.getId() != null && sellerBankAccount.getId() != null) {
             if (buyerBankAccount.getSum().doubleValue() > 0
-                    && (buyerBankAccount.getSum().doubleValue() - sum.doubleValue()) >= 0){
+                    && (buyerBankAccount.getSum().doubleValue() - sum.doubleValue()) >= 0) {
                 sellerBankAccount.setSum((sellerBankAccount.getSum().add(sum)));
                 buyerBankAccount.setSum((buyerBankAccount.getSum().subtract(sum)));
 
                 update(buyerBankAccount);
                 update(sellerBankAccount);
                 response.setStatus(200);
-            }else {
+            } else {
                 response.setStatus(500);
             }
         }
     }
 
     @Override
-    public BankAccountEntity convertBuyerBankAccount(BuyerBankAccount buyerFromXML){
+    public BankAccountEntity convertBuyerBankAccount(BuyerBankAccount buyerFromXML) {
         BankAccountEntity entity = new BankAccountEntity();
         entity.setId(UUID.fromString(buyerFromXML.getId()));
         entity.setNumber(buyerFromXML.getNumber());
@@ -105,7 +105,7 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     @Override
-    public BankAccountEntity convertSellerBankAccount(SellerBankAccount sellerBankAccount){
+    public BankAccountEntity convertSellerBankAccount(SellerBankAccount sellerBankAccount) {
         BankAccountEntity entity = new BankAccountEntity();
         entity.setId(UUID.fromString(sellerBankAccount.getId()));
         entity.setNumber(sellerBankAccount.getNumber());

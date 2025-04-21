@@ -34,7 +34,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public List<ClientEntity> findAll() {
-        return  clientRepository.findAll().stream()
+        return clientRepository.findAll().stream()
                 .toList();
     }
 
@@ -47,7 +47,7 @@ public class ClientServiceImpl implements ClientService {
     public Optional<ClientEntity> checkClientExists(String name) {
         if (clientRepository.findByName(name).isPresent()) {
             return clientRepository.findByName(name);
-        }else {
+        } else {
             return Optional.empty();
         }
     }
@@ -60,12 +60,12 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public void deleteById(UUID uuid) {
         clientRepository.findById(uuid)
-            .map(entity -> {
-                clientRepository.delete(entity);
-                clientRepository.flush();
-                return true;
-            })
-            .orElse(false);
+                .map(entity -> {
+                    clientRepository.delete(entity);
+                    clientRepository.flush();
+                    return true;
+                })
+                .orElse(false);
     }
 
     @Override
@@ -80,10 +80,10 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void generateKeyPairForClients(ClientEntity buyerEntity,ClientEntity sellerEntity) throws NoSuchAlgorithmException {
-        Optional<BankAccountEntity> actualBuyer=bankAccountService.findByUserId(buyerEntity.getId());
-        Optional<BankAccountEntity> actualSeller=bankAccountService.findByUserId(sellerEntity.getId());
-        if (actualBuyer.isPresent()&&actualSeller.isPresent()) {
+    public void generateKeyPairForClients(ClientEntity buyerEntity, ClientEntity sellerEntity) throws NoSuchAlgorithmException {
+        Optional<BankAccountEntity> actualBuyer = bankAccountService.findByUserId(buyerEntity.getId());
+        Optional<BankAccountEntity> actualSeller = bankAccountService.findByUserId(sellerEntity.getId());
+        if (actualBuyer.isPresent() && actualSeller.isPresent()) {
             KeyPair keyPair = generateRsaKeyPair();
             sellerEntity.setOpenKey(String.valueOf(keyPair.getPublic()));
             buyerEntity.setOpenKey(String.valueOf(keyPair.getPublic()));

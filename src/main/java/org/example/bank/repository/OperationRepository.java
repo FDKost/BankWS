@@ -10,5 +10,6 @@ import java.util.UUID;
 @Repository
 public interface OperationRepository extends JpaRepository<OperationEntity, UUID> {
     Optional<OperationEntity> findById(UUID id);
+
     Optional<OperationEntity> findByTransaction(UUID transactionId);
 }
