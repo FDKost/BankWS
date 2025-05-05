@@ -1,7 +1,6 @@
 package org.example.bank.service.bankaccount;
 
 import com.fdkost.jee.soap.BuyerBankAccount;
-import com.fdkost.jee.soap.GetBankResponse;
 import com.fdkost.jee.soap.SellerBankAccount;
 import org.example.bank.entity.BankAccountEntity;
 import org.example.bank.entity.ClientEntity;
@@ -22,8 +21,6 @@ public interface BankAccountService {
     BankAccountEntity convertBuyerBankAccount(BuyerBankAccount buyerFromXML);
 
     BankAccountEntity convertSellerBankAccount(SellerBankAccount sellerBankAccount);
-
-    void fillGetBank(BankAccountEntity buyerBankAccount, BankAccountEntity sellerBankAccount, BigDecimal sum, GetBankResponse response);
 
     void deleteById(BankAccountEntity bankAccountEntity);
 

@@ -1,7 +1,6 @@
 package org.example.bank.service.bankaccount;
 
 import com.fdkost.jee.soap.BuyerBankAccount;
-import com.fdkost.jee.soap.GetBankResponse;
 import com.fdkost.jee.soap.SellerBankAccount;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -60,34 +59,9 @@ public class BankAccountServiceImpl implements BankAccountService {
         if (bankAccountEntityOptional.isPresent()) {
             bankAccountEntity = bankAccountEntityOptional.get();
         } else {
-            BankAccountEntity entityToSave = new BankAccountEntity();
-            entityToSave.setClient(clientEntity);
-            entityToSave.setNumber("+3**********");
-            entityToSave.setSum(sum);
-
-            bankAccountEntity = create(entityToSave);
+            return null;
         }
         return bankAccountEntity;
-    }
-
-    @Override
-    @Transactional
-    public void fillGetBank(BankAccountEntity buyerBankAccount, BankAccountEntity sellerBankAccount,
-                            BigDecimal sum, GetBankResponse response) {
-
-        if (buyerBankAccount.getId() != null && sellerBankAccount.getId() != null) {
-            if (buyerBankAccount.getSum().doubleValue() > 0
-                    && (buyerBankAccount.getSum().doubleValue() - sum.doubleValue()) >= 0) {
-                sellerBankAccount.setSum((sellerBankAccount.getSum().add(sum)));
-                buyerBankAccount.setSum((buyerBankAccount.getSum().subtract(sum)));
-
-                update(buyerBankAccount);
-                update(sellerBankAccount);
-                response.setStatus(200);
-            } else {
-                response.setStatus(500);
-            }
-        }
     }
 
     @Override
