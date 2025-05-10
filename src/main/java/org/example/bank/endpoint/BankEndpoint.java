@@ -28,8 +28,12 @@ public class BankEndpoint {
         PaymentModel paymentModel = PaymentModel.fromRequest(request);
         PaymentOperationResult operationResult = new PaymentOperationResult();
         try {
-            if (clientService.checkClientsExists(paymentModel.getBuyerBankAccount().getClient().getName(),
-                    paymentModel.getSellerBankAccount().getClient().getName())) {
+            if (Boolean.TRUE.equals(clientService.checkClientsExists(paymentModel
+                            .getBuyerBankAccount()
+                            .getClient().getName(),
+                    paymentModel
+                            .getSellerBankAccount()
+                            .getClient().getName()))) {
                 operationResult = paymentService.performPayment(paymentModel);
             } else {
                 operationResult = PaymentOperationResult.failure("No such user in our bank");
