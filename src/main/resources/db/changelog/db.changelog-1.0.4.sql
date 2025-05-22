@@ -5,8 +5,8 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 --changeset FDKost:2
 CREATE TABLE IF NOT EXISTS client
 (
-    id uuid PRIMARY KEY ,
-    name TEXT,
+    id       uuid PRIMARY KEY,
+    name     TEXT,
     open_key TEXT DEFAULT '-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqoGRIo5jDNpAsn/oPb+j
 4IeiAta6vyFRNAFDufNi0+vH3w2mZbFMzjrgM49bc3rBOglo/zyRAHieIELmp8Cu
@@ -19,16 +19,16 @@ FwIDAQAB
 );
 CREATE TABLE IF NOT EXISTS bank_account
 (
-    id uuid PRIMARY KEY ,
+    id      uuid PRIMARY KEY,
     user_id uuid,
-    number TEXT,
-    sum DECIMAL
+    number  TEXT,
+    sum     DECIMAL
 );
 CREATE TABLE IF NOT EXISTS operation
 (
-    id uuid PRIMARY KEY ,
+    id                     uuid PRIMARY KEY,
     recipient_bank_account uuid,
-    sender_bank_account uuid,
-    transaction uuid,
-    sum DECIMAL
+    sender_bank_account    uuid,
+    transaction            uuid,
+    sum                    DECIMAL
 )
